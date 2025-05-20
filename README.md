@@ -68,27 +68,32 @@ Parameters:
 
 The script supports the following languages, with varying levels of compatibility:
 
-### Fully Supported Languages (Text and Audio)
+### Fully Supported Languages
 
-| Language Code | Description         | Text Generation | Audio Generation |
-|--------------|---------------------|-----------------|------------------|
-| en-US        | English (American)  | ✅ | ✅ |
-| en-GB        | English (British)   | ✅ | ✅ |
-| fr-FR        | French              | ✅ | ✅ |
-| de-DE        | German              | ✅ | ✅ |
-| nl-NL        | Dutch               | ✅ | ✅ |
-| it-IT        | Italian             | ✅ | ✅ |
-| es-ES        | Spanish (European)  | ✅ | ✅ |
-| pt-PT        | Portuguese (European) | ✅ | ✅ |
-| ro-RO        | Romanian            | ✅ | ✅ |
-| ja-JP        | Japanese            | ✅ | ✅ |
-| da-DK        | Danish              | ✅ | ✅ |
-| fi-FI        | Finnish             | ✅ | ✅ |
-| is-IS        | Icelandic           | ✅ | ✅ |
-| nb-NO        | Norwegian           | ✅ | ✅ |
-| sv-SE        | Swedish             | ✅ | ✅ |
-| pl-PL        | Polish              | ✅ | ✅ |
-| cy-GB        | Welsh               | ✅ | ✅ |
+| Language Code | Description         | Text Generation | Audio Generation | Sentiment Support |
+|--------------|---------------------|-----------------|------------------|------------------|
+| en-US        | English (American)  | ✅ | ✅ | ✅ Full |
+| en-GB        | English (British)   | ✅ | ✅ | ✅ Full |
+| fr-FR        | French              | ✅ | ✅ | ✅ Full |
+| de-DE        | German              | ✅ | ✅ | ⚠️ Basic |
+| nl-NL        | Dutch               | ✅ | ✅ | ⚠️ Basic |
+| it-IT        | Italian             | ✅ | ✅ | ⚠️ Basic |
+| es-ES        | Spanish (European)  | ✅ | ✅ | ⚠️ Basic |
+| pt-PT        | Portuguese (European) | ✅ | ✅ | ⚠️ Basic |
+| ro-RO        | Romanian            | ✅ | ✅ | ⚠️ Basic |
+| ja-JP        | Japanese            | ✅ | ✅ | ⚠️ Basic |
+| da-DK        | Danish              | ✅ | ✅ | ❌ None |
+| fi-FI        | Finnish             | ✅ | ✅ | ❌ None |
+| is-IS        | Icelandic           | ✅ | ✅ | ❌ None |
+| nb-NO        | Norwegian           | ✅ | ✅ | ❌ None |
+| sv-SE        | Swedish             | ✅ | ✅ | ❌ None |
+| pl-PL        | Polish              | ✅ | ✅ | ❌ None |
+| cy-GB        | Welsh               | ✅ | ✅ | ❌ None |
+
+**Sentiment Support Levels:**
+- **Full**: Supports all sentiment expressions (angry, excited, sad, etc.) with neural voices
+- **Basic**: Supports basic sentiment through text content but limited emotional expression in audio
+- **None**: Sentiment is expressed only through text content; audio has no emotional variation
 
 Note: For non-English languages, the script has been specifically optimized to handle the correct speaker labels in each language:
 - Japanese: 担当者/顧客 or 代理店/顧客
