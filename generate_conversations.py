@@ -243,7 +243,7 @@ def generate_prompt(domain, topic, language, customer_sentiment=None):
         """
     return base_prompt
 
-def invoke_bedrock(prompt, language, profile_name):
+def invoke_bedrock(prompt, language, profile_name, max_retries=10):
     session = boto3.Session(profile_name=profile_name)
     bedrock_runtime = session.client('bedrock-runtime')
     
@@ -262,13 +262,26 @@ def invoke_bedrock(prompt, language, profile_name):
         ]
     }
     
-    response = bedrock_runtime.invoke_model(
-        modelId=model_id,
-        body=json.dumps(request_body)
-    )
-    
-    response_body = json.loads(response['body'].read().decode('utf-8'))
-    return response_body['content'][0]['text']
+    # Implement exponential backoff for throttling
+    for attempt in range(max_retries):
+        try:
+            response = bedrock_runtime.invoke_model(
+                modelId=model_id,
+                body=json.dumps(request_body)
+            )
+            
+            response_body = json.loads(response['body'].read().decode('utf-8'))
+            return response_body['content'][0]['text']
+        
+        except Exception as e:
+            if "ThrottlingException" in str(e) and attempt < max_retries - 1:
+                # Calculate wait time with exponential backoff and jitter
+                wait_time = (2 ** attempt) + random.random()
+                print(f"Throttling detected, waiting {wait_time:.2f} seconds before retry {attempt+1}/{max_retries}...")
+                time.sleep(wait_time)
+            else:
+                # If it's not a throttling exception or we've reached max retries, re-raise
+                raise
 
 def get_available_voices(language, profile_name):
     """Get all available voices for a language"""
@@ -599,8 +612,16 @@ def main():
     domain_topics = get_domain_topics()
     domains = list(domain_topics.keys())
     
+    # Add delay between files to avoid throttling
+    delay_between_files = 5  # seconds
+    
     try:
         for i in range(args.num_files):
+            # Add delay between files (except for the first one)
+            if i > 0:
+                print(f"Waiting {delay_between_files} seconds before generating next conversation...")
+                time.sleep(delay_between_files)
+                
             # Select random domain and topic
             domain = random.choice(domains)
             topic = random.choice(domain_topics[domain])

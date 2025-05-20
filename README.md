@@ -45,16 +45,36 @@ This tool generates realistic customer service discussions between a mobile comp
 ## Installation
 
 1. Clone this repository or download the script files
-2. Install required dependencies:
+
+2. Set up a Python virtual environment (recommended):
 
 ```bash
-pip install boto3
+# Create a virtual environment
+python -m venv venv
+
+# Activate the virtual environment
+# On Linux/macOS:
+source venv/bin/activate
+# On Windows:
+# venv\Scripts\activate
 ```
 
-3. Configure your AWS credentials:
+3. Install required dependencies using the requirements file:
+
+```bash
+pip install -r requirements.txt
+```
+
+4. Configure your AWS credentials:
 
 ```bash
 aws configure
+```
+
+When you're done using the tool, you can deactivate the virtual environment:
+
+```bash
+deactivate
 ```
 
 ## Usage
@@ -115,6 +135,8 @@ The script supports the following languages, with varying levels of compatibilit
 - **Full**: Supports all sentiment expressions (angry, excited, sad, etc.) with neural voices
 - **Basic**: Supports basic sentiment through text content but limited emotional expression in audio
 - **None**: Sentiment is expressed only through text content; audio has no emotional variation
+
+(In full, some voice doesn't support all sentiment expressions)
 
 Note: For non-English languages, the script has been specifically optimized to handle the correct speaker labels in each language:
 - Japanese: 担当者/顧客 or 代理店/顧客
