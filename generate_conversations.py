@@ -58,202 +58,124 @@ def get_domain_topics():
         ]
     }
 
-def generate_prompt(domain, topic, language, customer_sentiment=None):
-    # Add customer sentiment to the prompt if specified
-    sentiment_instruction = ""
-    if customer_sentiment:
-        sentiment_instruction = f"The customer should express a {customer_sentiment} sentiment throughout the conversation. "
+def generate_prompt(domain, topic, language, customer_sentiment):
+    """Generate a prompt for the conversation based on domain, topic, and language"""
     
-    # Adjust prompt based on language
-    if language.startswith('ja-'):
-        base_prompt = f"""
-        Create a realistic conversation between a mobile phone company customer service agent and a customer discussing {topic} in the domain of {domain}.
-        The conversation should be natural, include typical greetings and closings, and demonstrate how the agent helps resolve the customer's issue.
-        Format the conversation as a dialogue with clear speaker labels (担当者: for agent and 顧客: for customer).
-        The conversation should be in {language} language.
-        Include some back-and-forth exchanges with the agent asking clarifying questions.
-        Make the conversation between 60 and 600 seconds long if it were spoken aloud.
-        {sentiment_instruction}
-        DO NOT include any introductory text, metadata, or explanations before the conversation - start directly with "担当者:" or "代理店:".
-        """
-    elif language.startswith('zh-'):
-        base_prompt = f"""
-        Create a realistic conversation between a mobile phone company customer service agent and a customer discussing {topic} in the domain of {domain}.
-        The conversation should be natural, include typical greetings and closings, and demonstrate how the agent helps resolve the customer's issue.
-        Format the conversation as a dialogue with clear speaker labels (客服: for agent and 客户: for customer).
-        The conversation should be in {language} language.
-        Include some back-and-forth exchanges with the agent asking clarifying questions.
-        Make the conversation between 60 and 600 seconds long if it were spoken aloud.
-        {sentiment_instruction}
-        DO NOT include any introductory text, metadata, or explanations before the conversation - start directly with "客服:".
-        """
-    elif language.startswith('ko-'):
-        base_prompt = f"""
-        Create a realistic conversation between a mobile phone company customer service agent and a customer discussing {topic} in the domain of {domain}.
-        The conversation should be natural, include typical greetings and closings, and demonstrate how the agent helps resolve the customer's issue.
-        Format the conversation as a dialogue with clear speaker labels (상담원: for agent and 고객: for customer).
-        The conversation should be in {language} language.
-        Include some back-and-forth exchanges with the agent asking clarifying questions.
-        Make the conversation between 60 and 600 seconds long if it were spoken aloud.
-        {sentiment_instruction}
-        DO NOT include any introductory text, metadata, or explanations before the conversation - start directly with "상담원:".
-        """
-    elif language.startswith('ar-'):
-        base_prompt = f"""
-        Create a realistic conversation between a mobile phone company customer service agent and a customer discussing {topic} in the domain of {domain}.
-        The conversation should be natural, include typical greetings and closings, and demonstrate how the agent helps resolve the customer's issue.
-        Format the conversation as a dialogue with clear speaker labels (الوكيل: for agent and العميل: for customer).
-        The conversation should be in {language} language.
-        Include some back-and-forth exchanges with the agent asking clarifying questions.
-        Make the conversation between 60 and 600 seconds long if it were spoken aloud.
-        {sentiment_instruction}
-        DO NOT include any introductory text, metadata, or explanations before the conversation - start directly with "الوكيل:".
-        """
-    elif language.startswith('de-'):
-        base_prompt = f"""
-        Create a realistic conversation between a mobile phone company customer service agent and a customer discussing {topic} in the domain of {domain}.
-        The conversation should be natural, include typical greetings and closings, and demonstrate how the agent helps resolve the customer's issue.
-        Format the conversation as a dialogue with clear speaker labels (Agent: for agent and Kunde: for customer).
-        The conversation should be in {language} language.
-        Include some back-and-forth exchanges with the agent asking clarifying questions.
-        Make the conversation between 60 and 600 seconds long if it were spoken aloud.
-        {sentiment_instruction}
-        DO NOT include any introductory text, metadata, or explanations before the conversation - start directly with "Agent:".
-        """
-    elif language.startswith('it-'):
-        base_prompt = f"""
-        Create a realistic conversation between a mobile phone company customer service agent and a customer discussing {topic} in the domain of {domain}.
-        The conversation should be natural, include typical greetings and closings, and demonstrate how the agent helps resolve the customer's issue.
-        Format the conversation as a dialogue with clear speaker labels (Agente: for agent and Cliente: for customer).
-        The conversation should be in {language} language.
-        Include some back-and-forth exchanges with the agent asking clarifying questions.
-        Make the conversation between 60 and 600 seconds long if it were spoken aloud.
-        {sentiment_instruction}
-        DO NOT include any introductory text, metadata, or explanations before the conversation - start directly with "Agente:".
-        """
-    elif language.startswith('es-'):
-        base_prompt = f"""
-        Create a realistic conversation between a mobile phone company customer service agent and a customer discussing {topic} in the domain of {domain}.
-        The conversation should be natural, include typical greetings and closings, and demonstrate how the agent helps resolve the customer's issue.
-        Format the conversation as a dialogue with clear speaker labels (Agente: for agent and Cliente: for customer).
-        The conversation should be in {language} language.
-        Include some back-and-forth exchanges with the agent asking clarifying questions.
-        Make the conversation between 60 and 600 seconds long if it were spoken aloud.
-        {sentiment_instruction}
-        DO NOT include any introductory text, metadata, or explanations before the conversation - start directly with "Agente:".
-        """
-    elif language.startswith('pt-'):
-        base_prompt = f"""
-        Create a realistic conversation between a mobile phone company customer service agent and a customer discussing {topic} in the domain of {domain}.
-        The conversation should be natural, include typical greetings and closings, and demonstrate how the agent helps resolve the customer's issue.
-        Format the conversation as a dialogue with clear speaker labels (Agente: for agent and Cliente: for customer).
-        The conversation should be in {language} language.
-        Include some back-and-forth exchanges with the agent asking clarifying questions.
-        Make the conversation between 60 and 600 seconds long if it were spoken aloud.
-        {sentiment_instruction}
-        DO NOT include any introductory text, metadata, or explanations before the conversation - start directly with "Agente:".
-        """
-    elif language.startswith('sv-'):
-        base_prompt = f"""
-        Create a realistic conversation between a mobile phone company customer service agent and a customer discussing {topic} in the domain of {domain}.
-        The conversation should be natural, include typical greetings and closings, and demonstrate how the agent helps resolve the customer's issue.
-        Format the conversation as a dialogue with clear speaker labels (Agent: for agent and Kund: for customer).
-        The conversation should be in {language} language.
-        Include some back-and-forth exchanges with the agent asking clarifying questions.
-        Make the conversation between 60 and 600 seconds long if it were spoken aloud.
-        {sentiment_instruction}
-        DO NOT include any introductory text, metadata, or explanations before the conversation - start directly with "Agent:".
-        """
-    elif language.startswith('da-'):
-        base_prompt = f"""
-        Create a realistic conversation between a mobile phone company customer service agent and a customer discussing {topic} in the domain of {domain}.
-        The conversation should be natural, include typical greetings and closings, and demonstrate how the agent helps resolve the customer's issue.
-        Format the conversation as a dialogue with clear speaker labels (Agent: for agent and Kunde: for customer).
-        The conversation should be in {language} language.
-        Include some back-and-forth exchanges with the agent asking clarifying questions.
-        Make the conversation between 60 and 600 seconds long if it were spoken aloud.
-        {sentiment_instruction}
-        DO NOT include any introductory text, metadata, or explanations before the conversation - start directly with "Agent:".
-        """
-    elif language.startswith('fi-'):
-        base_prompt = f"""
-        Create a realistic conversation between a mobile phone company customer service agent and a customer discussing {topic} in the domain of {domain}.
-        The conversation should be natural, include typical greetings and closings, and demonstrate how the agent helps resolve the customer's issue.
-        Format the conversation as a dialogue with clear speaker labels (Asiakaspalvelija: for agent and Asiakas: for customer).
-        The conversation should be in {language} language.
-        Include some back-and-forth exchanges with the agent asking clarifying questions.
-        Make the conversation between 60 and 600 seconds long if it were spoken aloud.
-        {sentiment_instruction}
-        DO NOT include any introductory text, metadata, or explanations before the conversation - start directly with "Asiakaspalvelija:".
-        """
-    elif language.startswith('nb-') or language.startswith('no-'):
-        base_prompt = f"""
-        Create a realistic conversation between a mobile phone company customer service agent and a customer discussing {topic} in the domain of {domain}.
-        The conversation should be natural, include typical greetings and closings, and demonstrate how the agent helps resolve the customer's issue.
-        Format the conversation as a dialogue with clear speaker labels (Agent: for agent and Kunde: for customer).
-        The conversation should be in {language} language.
-        Include some back-and-forth exchanges with the agent asking clarifying questions.
-        Make the conversation between 60 and 600 seconds long if it were spoken aloud.
-        {sentiment_instruction}
-        DO NOT include any introductory text, metadata, or explanations before the conversation - start directly with "Agent:".
-        """
-    elif language.startswith('pl-'):
-        base_prompt = f"""
-        Create a realistic conversation between a mobile phone company customer service agent and a customer discussing {topic} in the domain of {domain}.
-        The conversation should be natural, include typical greetings and closings, and demonstrate how the agent helps resolve the customer's issue.
-        Format the conversation as a dialogue with clear speaker labels (Agent: for agent and Klient: for customer).
-        The conversation should be in {language} language.
-        Include some back-and-forth exchanges with the agent asking clarifying questions.
-        Make the conversation between 60 and 600 seconds long if it were spoken aloud.
-        {sentiment_instruction}
-        DO NOT include any introductory text, metadata, or explanations before the conversation - start directly with "Agent:".
-        """
-    elif language.startswith('is-'):
-        base_prompt = f"""
-        Create a realistic conversation between a mobile phone company customer service agent and a customer discussing {topic} in the domain of {domain}.
-        The conversation should be natural, include typical greetings and closings, and demonstrate how the agent helps resolve the customer's issue.
-        Format the conversation as a dialogue with clear speaker labels (Þjónustufulltrúi: for agent and Viðskiptavinur: for customer).
-        The conversation should be in {language} language.
-        Include some back-and-forth exchanges with the agent asking clarifying questions.
-        Make the conversation between 60 and 600 seconds long if it were spoken aloud.
-        {sentiment_instruction}
-        DO NOT include any introductory text, metadata, or explanations before the conversation - start directly with "Þjónustufulltrúi:".
-        """
-    elif language.startswith('cy-'):
-        base_prompt = f"""
-        Create a realistic conversation between a mobile phone company customer service agent and a customer discussing {topic} in the domain of {domain}.
-        The conversation should be natural, include typical greetings and closings, and demonstrate how the agent helps resolve the customer's issue.
-        Format the conversation as a dialogue with clear speaker labels (Asiant: for agent and Cwsmer: for customer).
-        The conversation should be in {language} language.
-        Include some back-and-forth exchanges with the agent asking clarifying questions.
-        Make the conversation between 60 and 600 seconds long if it were spoken aloud.
-        {sentiment_instruction}
-        DO NOT include any introductory text, metadata, or explanations before the conversation - start directly with "Asiant:".
-        """
+    # Define language-specific prompts
+    if language.startswith("en"):
+        agent_label = "Agent"
+        customer_label = "Customer"
+        language_name = "English"
+    elif language.startswith("fr"):
+        agent_label = "Agent"
+        customer_label = "Client"
+        language_name = "French"
+    elif language.startswith("de"):
+        agent_label = "Agent"
+        customer_label = "Kunde"
+        language_name = "German"
+    elif language.startswith("nl"):
+        agent_label = "Agent"
+        customer_label = "Klant"
+        language_name = "Dutch"
+    elif language.startswith("it"):
+        agent_label = "Agente"
+        customer_label = "Cliente"
+        language_name = "Italian"
+    elif language.startswith("es"):
+        agent_label = "Agente"
+        customer_label = "Cliente"
+        language_name = "Spanish"
+    elif language.startswith("pt"):
+        agent_label = "Agente"
+        customer_label = "Cliente"
+        language_name = "Portuguese"
+    elif language.startswith("ro"):
+        agent_label = "Agent"
+        customer_label = "Client"
+        language_name = "Romanian"
+    elif language.startswith("ja"):
+        agent_label = "担当者"
+        customer_label = "顧客"
+        language_name = "Japanese"
+    elif language.startswith("da"):
+        agent_label = "Agent"
+        customer_label = "Kunde"
+        language_name = "Danish"
+    elif language.startswith("fi"):
+        agent_label = "Asiakaspalvelija"
+        customer_label = "Asiakas"
+        language_name = "Finnish"
+    elif language.startswith("is"):
+        agent_label = "Þjónustufulltrúi"
+        customer_label = "Viðskiptavinur"
+        language_name = "Icelandic"
+    elif language.startswith("nb"):
+        agent_label = "Agent"
+        customer_label = "Kunde"
+        language_name = "Norwegian"
+    elif language.startswith("sv"):
+        agent_label = "Agent"
+        customer_label = "Kund"
+        language_name = "Swedish"
+    elif language.startswith("pl"):
+        agent_label = "Agent"
+        customer_label = "Klient"
+        language_name = "Polish"
+    elif language.startswith("cy"):
+        agent_label = "Asiant"
+        customer_label = "Cwsmer"
+        language_name = "Welsh"
     else:
-        base_prompt = f"""
-        Create a realistic conversation between a mobile phone company customer service agent and a customer discussing {topic} in the domain of {domain}.
-        The conversation should be natural, include typical greetings and closings, and demonstrate how the agent helps resolve the customer's issue.
-        Format the conversation as a dialogue with clear speaker labels (Agent: and Customer:).
-        The conversation should be in {language} language.
-        Include some back-and-forth exchanges with the agent asking clarifying questions.
-        Make the conversation between 60 and 600 seconds long if it were spoken aloud.
-        {sentiment_instruction}
-        DO NOT include any introductory text, metadata, or explanations before the conversation - start directly with "Agent:" or the equivalent in the target language.
-        """
-    return base_prompt
-
-def invoke_bedrock(prompt, language, profile_name, max_retries=10):
-    session = boto3.Session(profile_name=profile_name)
-    bedrock_runtime = session.client('bedrock-runtime')
+        agent_label = "Agent"
+        customer_label = "Customer"
+        language_name = "English"
     
-    # Choose the appropriate model based on language
+    # Define sentiment instructions
+    sentiment_instructions = ""
+    if customer_sentiment == "angry":
+        sentiment_instructions = f"The {customer_label} is angry and frustrated about their issue."
+    elif customer_sentiment == "frustrated":
+        sentiment_instructions = f"The {customer_label} is frustrated but trying to remain calm."
+    elif customer_sentiment == "excited":
+        sentiment_instructions = f"The {customer_label} is excited and enthusiastic, even when discussing issues."
+    elif customer_sentiment == "happy":
+        sentiment_instructions = f"The {customer_label} is happy and pleasant throughout the conversation."
+    elif customer_sentiment == "sad":
+        sentiment_instructions = f"The {customer_label} is sad and disappointed about their situation."
+    elif customer_sentiment == "disappointed":
+        sentiment_instructions = f"The {customer_label} is disappointed with the service they've received."
+    elif customer_sentiment == "confused":
+        sentiment_instructions = f"The {customer_label} is confused and needs extra explanation."
+    else:
+        sentiment_instructions = f"The {customer_label} has a neutral tone."
+    
+    # Create the prompt
+    prompt = f"""
+Create a realistic customer service conversation in {language_name} between a mobile company {agent_label} and a {customer_label} about {topic}.
+The conversation should be between 60-600 seconds when spoken.
+{sentiment_instructions}
+Format the conversation as follows:
+{agent_label}: [Agent's dialogue]
+{customer_label}: [Customer's dialogue]
+"""
+    
+    return prompt
+
+def invoke_bedrock(prompt, language, profile_name):
+    """Invoke AWS Bedrock to generate the conversation"""
+    session = boto3.Session(profile_name=profile_name)
+    bedrock = session.client('bedrock-runtime')
+    
+    # Define model parameters based on language
     model_id = "anthropic.claude-3-sonnet-20240229-v1:0"
     
-    request_body = {
+    # Prepare the request
+    request = {
         "anthropic_version": "bedrock-2023-05-31",
-        "max_tokens": 4000,
+        "max_tokens": 4096,
         "temperature": 0.7,
+        "top_p": 0.9,
         "messages": [
             {
                 "role": "user",
@@ -262,154 +184,191 @@ def invoke_bedrock(prompt, language, profile_name, max_retries=10):
         ]
     }
     
-    # Implement exponential backoff for throttling
-    for attempt in range(max_retries):
-        try:
-            response = bedrock_runtime.invoke_model(
-                modelId=model_id,
-                body=json.dumps(request_body)
-            )
-            
-            response_body = json.loads(response['body'].read().decode('utf-8'))
-            return response_body['content'][0]['text']
+    # Invoke the model
+    try:
+        response = bedrock.invoke_model(
+            modelId=model_id,
+            body=json.dumps(request)
+        )
         
-        except Exception as e:
-            if "ThrottlingException" in str(e) and attempt < max_retries - 1:
-                # Calculate wait time with exponential backoff and jitter
-                wait_time = (2 ** attempt) + random.random()
-                print(f"Throttling detected, waiting {wait_time:.2f} seconds before retry {attempt+1}/{max_retries}...")
-                time.sleep(wait_time)
-            else:
-                # If it's not a throttling exception or we've reached max retries, re-raise
-                raise
+        # Parse the response
+        response_body = json.loads(response['body'].read().decode('utf-8'))
+        conversation = response_body['content'][0]['text']
+        
+        return conversation
+    except Exception as e:
+        raise Exception(f"Error invoking Bedrock: {str(e)}")
 
 def get_available_voices(language, profile_name):
-    """Get all available voices for a language"""
+    """Get available voices for the specified language"""
     session = boto3.Session(profile_name=profile_name)
     polly = session.client('polly')
     
-    # Map language codes to compatible Polly language codes
-    language_map = {
-        'zh-CN': 'cmn-CN',  # Map Chinese to Mandarin Chinese
-        'ar-SA': 'arb',     # Map Arabic to Modern Standard Arabic
-    }
-    
-    # Use mapped language code if available
-    polly_language = language_map.get(language, language)
-    
     try:
-        response = polly.describe_voices(LanguageCode=polly_language)
-        voices = response['Voices']
+        response = polly.describe_voices(LanguageCode=language)
         
-        # Separate male and female voices
-        male_voices = [v['Id'] for v in voices if v['Gender'] == 'Male']
-        female_voices = [v['Id'] for v in voices if v['Gender'] == 'Female']
+        # Group voices by gender
+        male_voices = []
+        female_voices = []
+        
+        for voice in response['Voices']:
+            if voice['Gender'] == 'Male':
+                male_voices.append(voice['Id'])
+            else:
+                female_voices.append(voice['Id'])
         
         return {
-            'male': male_voices if male_voices else ['Matthew'],  # Default if no male voices
-            'female': female_voices if female_voices else ['Joanna']  # Default if no female voices
+            'male': male_voices,
+            'female': female_voices
         }
     except Exception as e:
-        print(f"Error getting voices for language {language}: {str(e)}")
-        # Return default voices
+        print(f"Error getting voices: {str(e)}")
+        # Return some default voices as fallback
         return {
-            'male': ['Matthew'],
-            'female': ['Joanna']
+            'male': ['Matthew', 'Ruben', 'Remi'],
+            'female': ['Joanna', 'Lotte', 'Celine']
         }
 
-def parse_conversation(text):
-    """Parse conversation into agent and customer parts"""
+def parse_conversation(conversation):
+    """Parse the conversation into agent and customer parts with improved handling"""
     agent_parts = []
     customer_parts = []
     
-    # Skip any metadata or introductory text before the actual conversation
-    lines = text.split('\n')
-    conversation_started = False
-    actual_conversation_lines = []
+    lines = conversation.strip().split('\n')
     
+    # Determine the labels used in this conversation
+    agent_label = None
+    customer_label = None
+    
+    # First pass: identify the labels used in the conversation
     for line in lines:
         line = line.strip()
         if not line:
             continue
             
-        # Check if this is the start of the actual conversation
-        if line.startswith("Agent:") or line.startswith("Customer:") or \
-           line.startswith("Klant:") or line.startswith("Client:") or \
-           line.startswith("Cliente:") or line.startswith("担当者:") or \
-           line.startswith("顧客:") or line.startswith("고객:") or \
-           line.startswith("상담원:") or line.startswith("客户:") or \
-           line.startswith("客服:") or line.startswith("العميل:") or \
-           line.startswith("الوكيل:") or line.startswith("代理店:") or \
-           line.startswith("Kunde:") or line.startswith("Agente:") or \
-           line.startswith("Kund:") or line.startswith("Klient:") or \
-           line.startswith("Asiakaspalvelija:") or line.startswith("Asiakas:") or \
-           line.startswith("Þjónustufulltrúi:") or line.startswith("Viðskiptavinur:") or \
-           line.startswith("Agens:") or line.startswith("Pelanggan:") or \
-           line.startswith("Asiant:") or line.startswith("Cwsmer:"):
-            conversation_started = True
-            
-        if conversation_started:
-            actual_conversation_lines.append(line)
+        # Check for common agent patterns
+        if line.startswith("Agent:"):
+            agent_label = "Agent:"
+            break
+        elif line.startswith("Agente:"):
+            agent_label = "Agente:"
+            break
+        elif line.startswith("担当者:"):
+            agent_label = "担当者:"
+            break
+        elif line.startswith("代理店:"):
+            agent_label = "代理店:"
+            break
+        elif line.startswith("Asiakaspalvelija:"):
+            agent_label = "Asiakaspalvelija:"
+            break
+        elif line.startswith("Þjónustufulltrúi:"):
+            agent_label = "Þjónustufulltrúi:"
+            break
+        elif line.startswith("Asiant:"):
+            agent_label = "Asiant:"
+            break
     
-    # Now process the actual conversation
+    # Second pass: identify customer label based on the conversation
+    for line in lines:
+        line = line.strip()
+        if not line:
+            continue
+            
+        # Check for common customer patterns
+        if line.startswith("Customer:"):
+            customer_label = "Customer:"
+            break
+        elif line.startswith("Client:"):
+            customer_label = "Client:"
+            break
+        elif line.startswith("Cliente:"):
+            customer_label = "Cliente:"
+            break
+        elif line.startswith("Kunde:"):
+            customer_label = "Kunde:"
+            break
+        elif line.startswith("Klant:"):
+            customer_label = "Klant:"
+            break
+        elif line.startswith("顧客:"):
+            customer_label = "顧客:"
+            break
+        elif line.startswith("Asiakas:"):
+            customer_label = "Asiakas:"
+            break
+        elif line.startswith("Viðskiptavinur:"):
+            customer_label = "Viðskiptavinur:"
+            break
+        elif line.startswith("Cwsmer:"):
+            customer_label = "Cwsmer:"
+            break
+    
+    # If we couldn't determine the labels, try to infer them from the conversation structure
+    if not agent_label or not customer_label:
+        print("Warning: Could not determine conversation labels directly, trying to infer them")
+        
+        # Look for alternating patterns of speakers
+        speaker_lines = []
+        current_speaker = None
+        
+        for line in lines:
+            line = line.strip()
+            if not line:
+                continue
+                
+            # Check if this line starts a new speaker turn
+            colon_pos = line.find(':')
+            if colon_pos > 0:
+                potential_speaker = line[:colon_pos+1]
+                if potential_speaker != current_speaker:
+                    current_speaker = potential_speaker
+                    speaker_lines.append(potential_speaker)
+        
+        # Count occurrences of each speaker label
+        speaker_counts = {}
+        for speaker in speaker_lines:
+            if speaker not in speaker_counts:
+                speaker_counts[speaker] = 0
+            speaker_counts[speaker] += 1
+        
+        # Find the two most common speakers
+        sorted_speakers = sorted(speaker_counts.items(), key=lambda x: x[1], reverse=True)
+        if len(sorted_speakers) >= 2:
+            # Determine which is agent and which is customer based on common patterns
+            speaker1, speaker2 = sorted_speakers[0][0], sorted_speakers[1][0]
+            
+            if "agent" in speaker1.lower() or "agente" in speaker1.lower():
+                agent_label = speaker1
+                customer_label = speaker2
+            elif "customer" in speaker1.lower() or "client" in speaker1.lower() or "cliente" in speaker1.lower() or "klant" in speaker1.lower():
+                customer_label = speaker1
+                agent_label = speaker2
+            else:
+                # Default assumption: first speaker is agent
+                agent_label = speaker1
+                customer_label = speaker2
+    
+    # If we still couldn't determine the labels, use defaults
+    if not agent_label:
+        agent_label = "Agent:"
+    if not customer_label:
+        customer_label = "Client:" if "Client:" in conversation else "Customer:"
+    
+    print(f"Using labels: '{agent_label}' for agent and '{customer_label}' for customer")
+    
+    # Process the conversation line by line
     current_speaker = None
     current_text = ""
     
-    # Identify the agent and customer labels based on the first few lines
-    agent_label = "Agent:"
-    customer_label = "Customer:"
-    
-    for line in actual_conversation_lines[:5]:  # Check first few lines
-        if line.startswith("Klant:"):
-            customer_label = "Klant:"
-            agent_label = "Agent:"
-        elif line.startswith("Client:"):
-            customer_label = "Client:"
-            agent_label = "Agent:"
-        elif line.startswith("Cliente:"):
-            customer_label = "Cliente:"
-            agent_label = "Agent:"
-        elif line.startswith("担当者:"):
-            agent_label = "担当者:"
-            customer_label = "顧客:"
-        elif line.startswith("代理店:"):
-            agent_label = "代理店:"
-            customer_label = "顧客:"
-        elif line.startswith("상담원:"):
-            agent_label = "상담원:"
-            customer_label = "고객:"
-        elif line.startswith("客服:"):
-            agent_label = "客服:"
-            customer_label = "客户:"
-        elif line.startswith("الوكيل:"):
-            agent_label = "الوكيل:"
-            customer_label = "العميل:"
-        elif line.startswith("Kunde:"):
-            customer_label = "Kunde:"
-            agent_label = "Agent:"
-        elif line.startswith("Agente:"):
-            agent_label = "Agente:"
-            customer_label = "Cliente:"
-        elif line.startswith("Kund:"):
-            customer_label = "Kund:"
-            agent_label = "Agent:"
-        elif line.startswith("Klient:"):
-            customer_label = "Klient:"
-            agent_label = "Agent:"
-        elif line.startswith("Asiakaspalvelija:"):
-            agent_label = "Asiakaspalvelija:"
-            customer_label = "Asiakas:"
-        elif line.startswith("Þjónustufulltrúi:"):
-            agent_label = "Þjónustufulltrúi:"
-            customer_label = "Viðskiptavinur:"
-        elif line.startswith("Agens:"):
-            agent_label = "Agens:"
-            customer_label = "Pelanggan:"
-        elif line.startswith("Asiant:"):
-            agent_label = "Asiant:"
-            customer_label = "Cwsmer:"
-    
-    for line in actual_conversation_lines:
+    for line in lines:
+        line = line.strip()
+        if not line:
+            # Add a space for empty lines if we're collecting text
+            if current_speaker:
+                current_text += "\n"
+            continue
+            
         # Check for speaker change
         if line.startswith(agent_label):
             # If we were collecting text for previous speaker, save it
@@ -494,7 +453,7 @@ def generate_speech(text, language, voice_id, output_file, profile_name, emotion
         return False
 
 def create_conversation_audio_files(agent_parts, customer_parts, language, base_output_file, profile_name, customer_sentiment=None):
-    """Create separate audio files for agent and customer parts"""
+    """Create conversation audio by properly interleaving agent and customer parts"""
     # Get available voices for this language
     available_voices = get_available_voices(language, profile_name)
     
@@ -566,23 +525,44 @@ def create_conversation_audio_files(agent_parts, customer_parts, language, base_
             print(f"Generated customer part {i+1}/{len(customer_parts)}{emotion_text}")
             customer_audio_files.append(output_file)
     
-    # Combine the parts using cat command for simplicity
     try:
-        # Create a list of files in order
-        files = []
+        # Create a short silence file
+        silence_file = os.path.join(temp_dir, "silence.mp3")
+        subprocess.run(
+            ["ffmpeg", "-y", "-f", "lavfi", "-i", "anullsrc=r=24000:cl=mono", "-t", "0.5", "-q:a", "9", "-acodec", "libmp3lame", silence_file],
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True
+        )
+        
+        # Directly concatenate the files using ffmpeg
+        combined_file = base_output_file
+        
+        # Create a list of files to concatenate
+        concat_files = []
         for i in range(max(len(agent_audio_files), len(customer_audio_files))):
             if i < len(agent_audio_files):
-                files.append(agent_audio_files[i])
+                concat_files.append(agent_audio_files[i])
+                concat_files.append(silence_file)
             if i < len(customer_audio_files):
-                files.append(customer_audio_files[i])
+                concat_files.append(customer_audio_files[i])
+                concat_files.append(silence_file)
         
-        # Use cat to concatenate the files
-        cmd = ["cat"] + files
+        # Use ffmpeg to concatenate the files directly
+        cmd = ["ffmpeg", "-y"]
+        for file in concat_files:
+            cmd.extend(["-i", file])
         
-        with open(base_output_file, 'wb') as outfile:
-            subprocess.run(cmd, stdout=outfile, check=True)
+        # Add the filter complex to concatenate all inputs
+        filter_complex = ""
+        for i in range(len(concat_files)):
+            filter_complex += f"[{i}:0]"
+        filter_complex += f"concat=n={len(concat_files)}:v=0:a=1[out]"
         
-        print(f"Combined audio saved to: {base_output_file}")
+        cmd.extend(["-filter_complex", filter_complex, "-map", "[out]", combined_file])
+        
+        # Execute the command
+        subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+        
+        print(f"Combined audio saved to: {combined_file}")
         
         # Clean up temp files
         for file in os.listdir(temp_dir):
@@ -640,7 +620,7 @@ def main():
                 # Create unique filename
                 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
                 file_id = str(uuid.uuid4())[:8]
-                base_filename = f"{args.language}_{domain}_{timestamp}_{file_id}"
+                base_filename = f"{args.language}_{domain}_{customer_sentiment}_{timestamp}_{file_id}"
                 
                 # Save text version
                 text_filename = os.path.join(args.output_dir, f"{base_filename}.txt")

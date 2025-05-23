@@ -218,7 +218,7 @@ The audio files feature:
 - Natural pauses between turns
 - No narration or speaker labels (just the conversation)
 
-File naming convention: `{language}_{domain}_{timestamp}_{uuid}.{extension}`
+File naming convention: `{language}_{domain}_{sentiment}_{timestamp}_{uuid}.{extension}`
 
 ## AWS Services Used
 
